@@ -2,6 +2,7 @@ from load_auth import load_auth
 import sys
 import tweepy
 import json
+import time
 
 class ExtractionListener(tweepy.StreamListener):
     ''' Listens for tweets / errors'''
@@ -11,6 +12,13 @@ class ExtractionListener(tweepy.StreamListener):
         ''' Gets data from the stream to build up a list of tweets from the stream'''
         self.tweets.append(data)
         return True
+    def on_status(self, status):
+        print('on_status', status)
+    def on_limit(self, track):
+        print('on_limit', track)
+    def on_timeout(self):
+        print('Timeout, sleeping for 60 seconds...')
+        time.sleep(60)
     def on_error(self, status):
         '''  Prints out errors should they occur'''
         print('Error:', status)
