@@ -17,7 +17,7 @@ Produce these stats/plots for tweets with and without stopwords removed and also
 various thresholds.
 '''
 
-def most_used(tdm: np.ndarray, feat_names: list, int) -> list:
+def most_used(tdm: np.ndarray, feat_names: list, k: int) -> list:
     word_counts = sorted(enumerate(np.sum(tdm, axis=0)), key=lambda s: s[1])[::-1]
     return [(feat_names[i],count) for i,count in word_counts][:k]
 
