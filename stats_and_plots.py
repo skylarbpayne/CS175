@@ -28,10 +28,10 @@ def most_used(tdm: np.ndarray, feat_names: list, k: int) -> list:
     :return: a list of the k most used words
     '''
 
-    word_counts = sorted(enumerate(np.sum(tdm, axis=0)), key=lambda s: s[1])[::-1]
+    word_counts = sorted(enumerate(tdm.sum(axis=0).tolist()[0]), key=lambda s: s[1])[::-1]
     return [(feat_names[i],count) for i,count in word_counts][:k]
 
-def least_used(tdm: np.ndarray, k: int) -> list:
+def least_used(tdm: np.ndarray, feat_names: list, k: int) -> list:
     '''
     Returns the least used tokens according to a term document matrix
     
@@ -42,10 +42,10 @@ def least_used(tdm: np.ndarray, k: int) -> list:
     :return: a list of the k least used words
     '''
 
-    word_counts = sorted(enumerate(np.sum(tdm, axis=0)), key=lambda s: s[1])
+    word_counts = sorted(enumerate(tdm.sum(axis=0).tolist()[0]), key=lambda s: s[1])
     return [(feat_names[i],count) for i,count in word_counts][:k]
 
-def word_hist(tdm: np.ndarray) -> plt.Figure:
+def word_hist(tdm: np.ndarray, vocab: list) -> plt.Figure:
     '''
     Plots a histogram of the use of all words
 
@@ -53,8 +53,9 @@ def word_hist(tdm: np.ndarray) -> plt.Figure:
     
     :return: the figure of the histogram plot
     '''
-
-    return plt.hist(np.sum(tdm, axis=0))
+    
+    #NOTE: Need to modify plot to make things visible. Maybe histogram of k most frequent?
+    return plt.hist(tdm.sum(axis=0).transpose(), bins=len(vocab))
 
 def most_hashtags(feats: np.ndarray) -> int:
     '''
@@ -65,7 +66,7 @@ def most_hashtags(feats: np.ndarray) -> int:
     :return: the greatest number of used hashtags in a single tweet
     '''
 
-    return feats['num_hashtags'].max()
+    return max(feats['num_hashtags'])
 
 def hashtag_hist(feats: np.ndarray) -> plt.Figure:
     '''
@@ -75,7 +76,8 @@ def hashtag_hist(feats: np.ndarray) -> plt.Figure:
 
     :return: the figure of the histogram plot
     '''
-
+    
+    #NOTE: Same as above
     return plt.hist(feats['num_hashtags'], bins)
 
 def proportion_replies(feats: np.ndarray) -> float:
@@ -87,7 +89,7 @@ def proportion_replies(feats: np.ndarray) -> float:
     :return: the proportion of tweets that are reply vs all tweets
     '''
 
-    return feats['reply'].sum() / len(feats['reply'])
+    return sum(feats['reply']) / len(feats['reply'])
 
 def avg_tweet_length(tdm: np.ndarray) -> float:
     '''
@@ -98,4 +100,4 @@ def avg_tweet_length(tdm: np.ndarray) -> float:
     :return: the average length of a tweet
     '''
 
-    return np.sum(tdm) / np.shape(tdm)[0]
+    return tdm.sum() / tdm.shape[0]
