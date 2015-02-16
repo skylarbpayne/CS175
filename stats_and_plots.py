@@ -53,12 +53,15 @@ def word_bar(tdm: np.ndarray, vocab: list, k: int) -> plt.Figure:
     
     :return: the figure of the histogram plot
     '''
+    fig = plt.figure()
     words = most_used(tdm, vocab, k)
-    
     y = [t[1] for t in words]
-#TODO: Add labels and axes   
-#labels = [t[0] for t in words]
-    return plt.bar(range(k), y, width=0.8, align='center')
+    labels = [t[0] for t in words]
+    plt.xticks(range(k), labels, rotation='vertical')
+    plt.xlabel('Word')
+    plt.ylabel('Count')
+    plt.bar(range(k), y, width=0.8, align='center')
+    return fig
 
 def most_hashtags(feats: np.ndarray) -> int:
     '''
@@ -79,9 +82,12 @@ def hashtag_hist(feats: np.ndarray) -> plt.Figure:
 
     :return: the figure of the histogram plot
     '''
-    
-    #NOTE: Same as above
-    return plt.hist(feats['num_hashtags'], bins=most_hashtags(feats))
+    fig = plt.figure()
+    plt.hist(feats['num_hashtags'], bins=most_hashtags(feats))
+    plt.yscale('log', nonposy='clip')
+    plt.xlabel('Number of Hashtags')
+    plt.ylabel('Count')
+    return fig
 
 def proportion_replies(feats: np.ndarray) -> float:
     '''
