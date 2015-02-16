@@ -10,13 +10,14 @@ tdm, vocab = word_counts(tweets)
 print(most_used(tdm, vocab, 10))
 print(least_used(tdm, vocab, 10))
 
-#plt.show(word_hist(tdm, vocab))
+plt.show(word_bar(tdm, vocab, 10))
 
 feats = {}
 feats['num_hashtags'] = num_hashtags(tweets)
 feats['reply'] = reply(tweets)
 
 print(most_hashtags(feats))
+plt.show(hashtag_hist(feats))
 
 print(proportion_replies(feats))
 

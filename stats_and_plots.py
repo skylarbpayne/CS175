@@ -45,17 +45,20 @@ def least_used(tdm: np.ndarray, feat_names: list, k: int) -> list:
     word_counts = sorted(enumerate(tdm.sum(axis=0).tolist()[0]), key=lambda s: s[1])
     return [(feat_names[i],count) for i,count in word_counts][:k]
 
-def word_hist(tdm: np.ndarray, vocab: list) -> plt.Figure:
+def word_bar(tdm: np.ndarray, vocab: list, k: int) -> plt.Figure:
     '''
-    Plots a histogram of the use of all words
+    Plots a histogram of the use of the k most used words
 
     :param tdm: the term document matrix
     
     :return: the figure of the histogram plot
     '''
+    words = most_used(tdm, vocab, k)
     
-    #NOTE: Need to modify plot to make things visible. Maybe histogram of k most frequent?
-    return plt.hist(tdm.sum(axis=0).transpose(), bins=len(vocab))
+    y = [t[1] for t in words]
+#TODO: Add labels and axes   
+#labels = [t[0] for t in words]
+    return plt.bar(range(k), y, width=0.8, align='center')
 
 def most_hashtags(feats: np.ndarray) -> int:
     '''
@@ -78,7 +81,7 @@ def hashtag_hist(feats: np.ndarray) -> plt.Figure:
     '''
     
     #NOTE: Same as above
-    return plt.hist(feats['num_hashtags'], bins)
+    return plt.hist(feats['num_hashtags'], bins=most_hashtags(feats))
 
 def proportion_replies(feats: np.ndarray) -> float:
     '''
