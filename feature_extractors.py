@@ -79,10 +79,20 @@ def num_retweets(tweets: list) -> list:
 
     :return: list of counts of retweets of the tweets
     '''
-    return[t['retweet_count'] for t in tweets]
+    return [t['retweet_count'] for t in tweets]
+
+def author(tweets: list) -> list:
+    '''
+    Takes in a list of dictionary objects representing tweets.  Returns the author id of the tweet
+
+    :param tweets: The list of tweets, where each tweet is a dictionary
+
+    :return: list of author ids from the tweets
+    '''
+    return [t['user']['id'] for t in tweets]
 
 if __name__ == '__main__':
-    tweets = [{'text': 'hello #whatup #you #me', 'in_reply_to_user_id': None, 'retweeted': True, 'retweet_count': 1000}]
+    tweets = [{'text': 'hello #whatup #you #me', 'in_reply_to_user_id': None, 'retweeted': True, 'retweet_count': 1000, 'user': {'id': 1234}}]
     
     #test num_hashtags
     assert(num_hashtags(tweets)[0] == 3)
@@ -107,4 +117,7 @@ if __name__ == '__main__':
 
     #test num_retweets
     assert(num_retweets(tweets)[0] == 1000)
+
+    #test author
+    assert(author(tweets)[0] == 1234)
     
