@@ -61,8 +61,28 @@ def length(tweets: list) -> list:
 
     return [t['text'].count(' ') + 1 for t in tweets]
 
+def retweet(tweets: list) -> list:
+    '''
+    Takes in a list of dictionary objects representing tweets.  Returns binary feature of whether or not the tweet is a retweet
+
+    :param tweets: The list of tweets, where each tweet is a dictionary
+
+    :return: list of binary elements; 1 = is a retweet, 0 = not a retweet
+    '''
+    return [1 if t['retweeted'] else 0 for t in tweets]
+
+def num_retweets(tweets: list) -> list:
+    '''
+    Takes in a list of dictionary objects representing tweets.  Returns the number of times this tweet has been retweeted
+
+    :param tweets: The list of tweets, where each tweet is a dictionary
+
+    :return: list of counts of retweets of the tweets
+    '''
+    return[t['retweet_count'] for t in tweets]
+
 if __name__ == '__main__':
-    tweets = [{'text': 'hello #whatup #you #me', 'in_reply_to_user_id': None}]
+    tweets = [{'text': 'hello #whatup #you #me', 'in_reply_to_user_id': None, 'retweeted': True, 'retweet_count': 1000}]
     
     #test num_hashtags
     assert(num_hashtags(tweets)[0] == 3)
@@ -81,3 +101,10 @@ if __name__ == '__main__':
     #test tf_idf
     assert(tf_idf(tweets)[0].nnz == 4)
     assert(len(tf_idf(tweets)[1]) == 4)
+
+    #test retweet
+    assert(retweet(tweets)[0] == 1)
+
+    #test num_retweets
+    assert(num_retweets(tweets)[0] == 1000)
+    
