@@ -1,6 +1,6 @@
 import nltk
 import string
-punc = string.punctuation
+punc = string.punctuation.replace('#', '')
 english_stop_words = nltk.corpus.stopwords.words('english') + ['']
 
 def remove_stop_punctuation(tokenized_tweets: list) -> list:
