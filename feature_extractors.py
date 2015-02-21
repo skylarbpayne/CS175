@@ -1,5 +1,6 @@
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 def word_counts(tweets: list) -> (np.ndarray, list):
     '''
@@ -13,6 +14,19 @@ def word_counts(tweets: list) -> (np.ndarray, list):
     cv = CountVectorizer()
     text = [t['text'] for t in tweets]
     return cv.fit_transform(text), cv.get_feature_names()
+    
+def tf_idf(tweets: list) -> (np.ndarray, list):
+    '''
+    Takes a list of dictionary objects representing tweets. Returns a tf-idf word matrix of size (num tweets) by (num words)
+
+    :param tweets: The list of tweets, where each tweet is a dictionary
+    
+    :return: tuple of (tf-idf matrix, vocabulary list)
+    '''
+    
+    tv = TfidfVectorizer()
+    text = [t['text'] for t in tweets]
+    return tv.fit_transform(text), tv.get_feature_names()
 
 def num_hashtags(tweets: list) -> list:
     '''
@@ -63,3 +77,7 @@ if __name__ == '__main__':
     #test length
     length_feat = length(tweets)
     assert(length_feat[0] == 4)
+    
+    #test tf_idf
+    assert(tf_idf(tweets)[0].nnz == 4)
+    assert(len(tf_idf(tweets)[1]) == 4)
