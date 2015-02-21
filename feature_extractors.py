@@ -36,6 +36,17 @@ def reply(tweets: list) -> list:
     
     return[1 if t['in_reply_to_user_id'] != None else 0 for t in tweets]
 
+def length(tweets: list) -> list:
+    '''
+    Takes a list of dictionary objects representing tweets. Returns the number of tokens in the tweet
+
+    :param tweets: The list of tweets, where each tweet is a dictionary
+
+    :return: list of lengths of tweets
+    '''
+
+    return [t['text'].count(' ') + 1 for t in tweets]
+
 if __name__ == '__main__':
     tweets = [{'text': 'hello #whatup #you #me', 'in_reply_to_user_id': None}]
     
@@ -48,3 +59,7 @@ if __name__ == '__main__':
 
     #test reply
     assert(reply(tweets)[0] == 0)
+
+    #test length
+    length_feat = length(tweets)
+    assert(length_feat[0] == 4)
