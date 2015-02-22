@@ -15,6 +15,7 @@ plt.show(word_bar(tdm, vocab, 10))
 feats = {}
 feats['num_hashtags'] = num_hashtags(tweets)
 feats['reply'] = reply(tweets)
+feats['length'] = length(tweets)
 
 print(most_hashtags(feats))
 plt.show(hashtag_hist(feats))
@@ -22,3 +23,4 @@ plt.show(hashtag_hist(feats))
 print(proportion_replies(feats))
 
 print(avg_tweet_length(tdm))
+plt.show(length_hist(feats))

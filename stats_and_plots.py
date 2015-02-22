@@ -102,7 +102,7 @@ def proportion_replies(feats: np.ndarray) -> float:
 
 def avg_tweet_length(tdm: np.ndarray) -> float:
     '''
-    Returns the average length of a tweet
+    Returns the average number of tokens in a tweet
 
     :param tdm: the term document matrix
 
@@ -110,3 +110,19 @@ def avg_tweet_length(tdm: np.ndarray) -> float:
     '''
 
     return tdm.sum() / tdm.shape[0]
+
+def length_hist(feats: np.ndarray) -> plt.Figure:
+    '''
+    A histogram of the frequency of length (i.e. number of tokens) in individual tweets
+
+    :param feats: the features of the tweets ( must include 'length')
+
+    :return: the figure of the histogram plot
+    '''
+    fig = plt.figure()
+    max_length = max(feats['length'])
+    plt.hist(feats['length'], bins=max_length)
+    plt.xlabel('Number of Tokens')
+    plt.ylabel('Count')
+    plt.ylim(max_length)
+    return fig
