@@ -59,7 +59,7 @@ def length(tweets: list) -> list:
     :return: list of lengths of tweets
     '''
 
-    return [t['text'].count(' ') + 1 for t in tweets]
+    return [len(t['text'].strip().split()) for t in tweets]
 
 def retweet(tweets: list) -> list:
     '''
