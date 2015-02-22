@@ -121,8 +121,36 @@ def length_hist(feats: np.ndarray) -> plt.Figure:
     '''
     fig = plt.figure()
     max_length = max(feats['length'])
-    plt.hist(feats['length'], bins=max_length)
+    plt.hist(feats['length'], bins=max_length+1)
     plt.xlabel('Number of Tokens')
     plt.ylabel('Count')
-    plt.ylim(max_length)
+    return fig
+
+def avg_retweets(feats: np.ndarray) -> int:
+    '''
+    Returns the maximum number of retweets
+
+    :param feats: the features of the tweets ( must include 'num_retweets')
+
+    :return: the maximum number of retweets
+    '''
+
+    return sum(feats['num_retweets']) / len(feats['num_retweets'])
+
+def num_retweets_hist(feats: np.ndarray) ->plt.Figure:
+    '''
+    A histogram of the frequency of retweets
+
+    :param feats: features of the tweets (must include 'length')
+
+    :return: figure of the histogram plot
+    '''
+
+    fig = plt.figure()
+    max_retweets = max(feats['num_retweets'])
+    plt.hist(feats['num_retweets'], bins=max_retweets+1)
+    plt.xlabel('Number of Retweets')
+    plt.xlim((0, max_retweets+1))
+    plt.xticks(range(max_retweets+1))
+    plt.ylabel('Count')
     return fig
