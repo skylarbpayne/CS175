@@ -60,6 +60,7 @@ def word_bar(tdm: np.ndarray, vocab: list, k: int) -> plt.Figure:
     plt.xticks(range(k), labels, rotation='vertical')
     plt.xlabel('Word')
     plt.ylabel('Count')
+    plt.title('Word Counts')
     plt.bar(range(k), y, width=0.8, align='center')
     return fig
 
@@ -87,6 +88,7 @@ def hashtag_hist(feats: np.ndarray) -> plt.Figure:
     plt.yscale('log', nonposy='clip')
     plt.xlabel('Number of Hashtags')
     plt.ylabel('Count')
+    plt.title('Number of Hashtags Used')
     return fig
 
 def proportion_replies(feats: np.ndarray) -> float:
@@ -124,6 +126,7 @@ def length_hist(feats: np.ndarray) -> plt.Figure:
     plt.hist(feats['length'], bins=max_length+1)
     plt.xlabel('Number of Tokens')
     plt.ylabel('Count')
+    plt.title('Length of Tweets (Number of Tokens)')
     return fig
 
 def avg_retweets(feats: np.ndarray) -> int:
@@ -153,4 +156,5 @@ def num_retweets_hist(feats: np.ndarray) ->plt.Figure:
     plt.xlim((0, max_retweets+1))
     plt.xticks(range(max_retweets+1))
     plt.ylabel('Count')
+    plt.title('Number of Retweets')
     return fig

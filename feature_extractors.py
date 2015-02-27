@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-def word_counts(tweets: list) -> (np.ndarray, list):
+def word_counts(tweets: list, k: int = None) -> (np.ndarray, list):
     '''
     Takes a list of dictionary objects representing tweets. Returns a sparse word count matrix of size (num tweets) by (num words)
 
@@ -11,11 +11,11 @@ def word_counts(tweets: list) -> (np.ndarray, list):
     :return: tuple of (count matrix, vocabulary list)
     '''
     
-    cv = CountVectorizer()
+    cv = CountVectorizer(max_features=k)
     text = [t['text'] for t in tweets]
     return cv.fit_transform(text), cv.get_feature_names()
     
-def tf_idf(tweets: list) -> (np.ndarray, list):
+def tf_idf(tweets: list, k: int = None) -> (np.ndarray, list):
     '''
     Takes a list of dictionary objects representing tweets. Returns a tf-idf word matrix of size (num tweets) by (num words)
 
@@ -24,7 +24,7 @@ def tf_idf(tweets: list) -> (np.ndarray, list):
     :return: tuple of (tf-idf matrix, vocabulary list)
     '''
     
-    tv = TfidfVectorizer()
+    tv = TfidfVectorizer(max_features=k)
     text = [t['text'] for t in tweets]
     return tv.fit_transform(text), tv.get_feature_names()
 

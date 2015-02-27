@@ -7,10 +7,10 @@ import matplotlib.pyplot as plt
 tweets = load_tweets('data/sample1.txt')
 tdm, vocab = word_counts(tweets)
 
-print(most_used(tdm, vocab, 10))
-print(least_used(tdm, vocab, 10))
+print(most_used(tdm, vocab, 25))
+print(least_used(tdm, vocab, 25))
 
-plt.show(word_bar(tdm, vocab, 10))
+plt.show(word_bar(tdm, vocab, 25))
 
 feats = {}
 feats['num_hashtags'] = num_hashtags(tweets)
