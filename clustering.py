@@ -29,3 +29,16 @@ def ward_linkage_clustering(Xtr: np.ndarray, k: int) -> np.ndarray:
 
     ward = AgglomerativeClustering(n_clusters=k, linkage='ward')
     return ward.fit_predict(Xtr.toarray())
+
+def average_linkage_clustering(Xtr: np.ndarray, k: int) -> np.ndarray:
+    '''
+    Performs hierarchical clustering with average linkage
+
+    :param Xtr: the observation x feature matrix
+    :param k: the number of clusters
+
+    :return: the cluster assignments for each data point
+    '''
+
+    average = AgglomerativeClustering(n_clusters=k, linkage='average')
+    return average.fit_predict(Xtr.toarray())
