@@ -42,3 +42,16 @@ def average_linkage_clustering(Xtr: np.ndarray, k: int) -> np.ndarray:
 
     average = AgglomerativeClustering(n_clusters=k, linkage='average')
     return average.fit_predict(Xtr.toarray())
+
+def k_means_clustering(Xtr: np.ndarray, k: int) -> np.ndarray:
+    '''
+    Performs clustering with k means
+
+    :param Xtr: the observation x feature matrix
+    :param k: the number of clusters
+
+    :return: list of indices of the clusters of each data point
+    '''
+
+    k_means = KMeans(init='k-means++', n_clusters=k, n_init=10)
+    return k_means.fit_predict(Xtr.toarray())
