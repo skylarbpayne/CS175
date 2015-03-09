@@ -1,7 +1,7 @@
 import nltk
 english_stop_words = nltk.corpus.stopwords.words('english')
 
-def remove_stop_punctuation(tweets: list) -> list:
+def remove_stop_words(tweets: list) -> list:
     '''
         tweets is a list of dictionaries representing tweet objects
         The output of this transformer is a list with all the stop words removed.
