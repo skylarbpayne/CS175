@@ -1,7 +1,7 @@
 import string
 punctuation = string.punctuation.replace('#', '')
 
-def remove_stop_punctuation(tweets: list) -> list:
+def remove_punctuation(tweets: list) -> list:
     '''
         tweets is a list of dictionaries representing tweet objects
         The output of this transformer is a list with all the punctuation removed.
