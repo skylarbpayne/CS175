@@ -16,10 +16,10 @@ if __name__ == '__main__':
     tweets = remove_non_english(tweets, 0.2)
     tweets = remove_links(tweets)
 
-    feats, vocab = tf_idf(tweets, None, 0.95, 0.05)
+    feats, vocab = tf_idf(tweets, None, 0.995, 0.005)
 
     print(feats.shape)
-    clusters = complete_linkage_clustering(feats, 100)
+    clusters = complete_linkage_clustering(feats, 75)
     
 ##Largest cluster?
     largest_cluster_ind = np.argmax([sum(clusters == i) for i in range(20)])
@@ -30,4 +30,4 @@ if __name__ == '__main__':
     #    trends = [t['name'] for t in [json.loads(s)['trends'] for s in content] if 'name' in t]
 
 
-    print(lda_extract_topic(largest_cluster, vocab))
+    print(lda_extract_topic(largest_cluster, vocab, 25))
