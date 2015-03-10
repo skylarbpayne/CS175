@@ -8,8 +8,8 @@ def remove_digits(tweets: list) -> list:
     '''
 
     text = [tw['text'].split() for tw in tweets]
-    text = [[tok for tok in t if tok.isalpha()] for t in text]
+    text = [' '.join([tok for tok in t if tok.isalpha()]) for t in text]
     for tw,txt in zip(tweets,text):
-        tw['text'] = txt
+        tw['text'] = txt 
 
     return tweets
