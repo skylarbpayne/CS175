@@ -15,7 +15,7 @@ def word_counts(tweets: list, k: int = None) -> (np.ndarray, list):
     text = [t['text'] for t in tweets]
     return cv.fit_transform(text), cv.get_feature_names()
     
-def tf_idf(tweets: list, k: int = None) -> (np.ndarray, list):
+def tf_idf(tweets: list, k: int = None, max_df=1.0, min_df=1) -> (np.ndarray, list):
     '''
     Takes a list of dictionary objects representing tweets. Returns a tf-idf word matrix of size (num tweets) by (num words)
 
@@ -24,7 +24,7 @@ def tf_idf(tweets: list, k: int = None) -> (np.ndarray, list):
     :return: tuple of (tf-idf matrix, vocabulary list)
     '''
     
-    tv = TfidfVectorizer(max_features=k)
+    tv = TfidfVectorizer(max_features=k, max_df=max_df, min_df=min_df)
     text = [t['text'] for t in tweets]
     return tv.fit_transform(text), tv.get_feature_names()
 
