@@ -8,10 +8,11 @@ from remove_empty import remove_empty
 from feature_extractors import *
 from clustering import *
 from trend_extraction import *
+from stats_and_plots import *
 
 import json
 from scipy import sparse
-
+import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     print('Loading...')
@@ -23,7 +24,7 @@ if __name__ == '__main__':
     print('Cleaning...')
     tweets = remove_stop_words(tweets)
     tweets = remove_punctuation(tweets)
-    tweets = remove_non_english(tweets, 0.2)
+    tweets = remove_non_english(tweets)
     tweets = remove_links(tweets)
     tweets = remove_digits(tweets)
     tweets = remove_empty(tweets)
@@ -31,8 +32,10 @@ if __name__ == '__main__':
 
     #By using all tweets, we get a better idea of what the "true" use of the word is. Can detect spikes!
     print('Extracting Features...')
-    feats, vocab = tf_idf(tweets, None, .995, 0.005)
+    feats, vocab = tf_idf(tweets, None, (1,3), 0.999, 0.001)
     print('Features Extracted.')
+
+    plt.show(word_bar(feats, vocab, 50))
 
     #filter out tweets not in sample1
     print('Filtering...')
@@ -43,19 +46,30 @@ if __name__ == '__main__':
     print('\tsample1_feats shape:', sample1_feats.shape)
 
     print('Clustering...')
-    clusters = complete_linkage_clustering(sample1_feats, 120)
+    n_c = 50
+    clusters = ward_linkage_clustering(sample1_feats, n_c)
     print('Clustered')
 
 ##Largest cluster?
-    print('Getting largest cluster...')
-    largest_cluster_ind = np.argmax([sum(clusters == i) for i in range(20)])
-    largest_cluster = sample1_feats[clusters==largest_cluster_ind,:]
-    print('Found largest cluster.')
-
-    #with open('data/sample1.trends.txt') as f:
-    #    content = f.readlines()
-    #    trends = [t['name'] for t in [json.loads(s)['trends'] for s in content] if 'name' in t]
-
-    print('Extracting trends...')
-    print(lda_extract_topic(largest_cluster, vocab, 30))
-    print('Trends extracted.')
+    print('Getting largest clusters...')
+    cluster_sizes = [(clusters == i).sum() for i in range(n_c)]
+    print(sum(cluster_sizes))
+    assert(sum(cluster_sizes) == sample1_feats.shape[0])
+    
+    cluster_sizes = sorted([(i,sz) for i,sz in enumerate(cluster_sizes)], key=lambda x: x[1], reverse=True)
+    
+    expected_trends = []
+    print('Found largest clusters.')
+    for i,_ in cluster_sizes:
+        cluster = sample1_feats[clusters==i,:]
+        print('Cluster %d' % i)
+        print('\tExtracting trends...')
+        expected_trends.append(lda_extract_topic(cluster, vocab, 5))
+        print('\tTrends extracted.')
+    
+    print('Expected Trends')
+    print(expected_trends)
+    print('Actual Trends')
+    with open('data/sample1.trends.txt') as f:
+        content = f.readlines()
+    print([t['name'] for t in json.loads(content[0])[0]['trends']])

@@ -1,15 +1,26 @@
-import nltk
-english_vocab = set(w.lower() for w in nltk.corpus.words.words())
+from langdetect import detect
 
-def remove_non_english(tweets: list, thres: float) -> list:
+def detect_wrapper(x: str) -> bool:
+    '''
+    Since langdetect.detect can throw exceptions, this will let us use detect in a list comprehension and handle the exceptions
+
+    :param x: the string to detect the language of
+    
+    :return : True if english, False otherwise
+    '''
+    try:
+        return detect(x) == 'en'
+    except:
+        return True
+
+def remove_non_english(tweets: list) -> list:
     '''
         tweets is a list of dictionaries representing tweet objects
         thres is a threshold that defines what percentage of words in a tweet must be english for it to be kept [0,1]
             a tweet is kept if pct_eng >= thres
         The output of this transformer is a list with all the non-english words removed.
     '''
-    pct_eng = [sum([1 for t in tweet['text'].split() if t.lower() in english_vocab])/len(tweet) for tweet in tweets]
-    return [tweet for i,tweet in enumerate(tweets) if pct_eng[i] >= thres]
+    return [tweet for tweet in tweets if detect_wrapper(tweet['text'])]
     
 
 if __name__ == '__main__':

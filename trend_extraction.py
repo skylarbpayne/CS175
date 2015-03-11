@@ -9,7 +9,7 @@ def lda_extract_topic(tweets: np.ndarray, vocab: list, k=1) -> str:
     :return: a string representing the trend found via LDA
     '''
     #vary these parameters
-    model = lda.LDA(n_topics = k, n_iter = 500)
+    model = lda.LDA(n_topics = k, n_iter = 1000)
     model.fit(tweets)
 
-    return np.array(vocab)[np.argsort(model.topic_word_[0])][-1]
+    return np.array(vocab)[np.argsort(model.topic_word_[0:4])][-1]
