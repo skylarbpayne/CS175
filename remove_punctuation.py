@@ -1,5 +1,5 @@
 import string
-punctuation = string.punctuation.replace('#', '')
+punctuation = string.punctuation #.replace('#', '')
 
 def remove_punctuation(tweets: list) -> list:
     '''

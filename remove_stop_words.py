@@ -1,6 +1,8 @@
 import nltk
 twitter_terms = [ 'rt' , 'follow' ]
-english_stop_words = nltk.corpus.stopwords.words('english') + twitter_terms
+daddy_yankee = ['si', 'que', 'sígueme', 'te', 'di', 'da']
+
+english_stop_words = nltk.corpus.stopwords.words('english') + twitter_terms + daddy_yankee 
 
 def remove_stop_words(tweets: list) -> list:
     '''
