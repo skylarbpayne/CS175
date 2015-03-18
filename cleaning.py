@@ -121,11 +121,13 @@ def remove_stop_words(tweets: list) -> list:
 
 if __name__ == '__main__':
     print('Testing remove_digits...')
-    #test
+    tweets = [{'text': '124 hey'}]
+    assert(remove_digits(tweets)[0]['text'] == 'hey')
     print('\tPASSED')
 
     print('Testing remove_empty...')
-    #test
+    tweets = [{'text': ' '}, {'text': ''}]
+    assert(len(remove_empty(tweets)) == 0)
     print('\tPASSED')
 
     print('Testing remove_links...')
@@ -141,16 +143,18 @@ if __name__ == '__main__':
     test_tweets = [{'text':'hey there jed'},{'text':'lwejk a;welkfj aw;elfj'}]
     t1 = remove_non_english(test_tweets, 1)
     t2 = remove_non_english(test_tweets, 0)
+    t = remove_non_english2(test_tweets)
     assert(len(t1) == 1)
     assert(len(t2) == 2)
+    assert(len(t) == 1)
     print('\tPASSED')
 
     print('Testing remove_punctuation...')
     test_tweets = [{'text':'Hey There !'}, {'text':'#apple orange test'}, {'text':'Website.', 'in_reply_to_user_id': None}]
-    t1 = remove_stop_punctuation(test_tweets)
+    t1 = remove_punctuation(test_tweets)
     assert(len(t1[0]['text'].split()) == 2)
     assert(len(t1[1]['text'].split()) == 3)
-    assert(t1[1]['text'][0] == '#')
+    #assert(t1[1]['text'][0] == '#')
     assert(len(t1[2]['text'].split()) == 1)
     assert(t1[2]['text'] == 'Website')
     assert(len(t1[2]) == 2)
@@ -163,7 +167,7 @@ if __name__ == '__main__':
 
     print('Testing remove_stop_words...')
     test_tweets = [{'text':'Hey There'}, {'text':'apple orange test'}, {'text':'Website', 'in_reply_to_user_id': None}]
-    t1 = remove_stop_punctuation(test_tweets)
+    t1 = remove_stop_words(test_tweets)
     assert(len(t1[0]['text'].split()) == 1)
     assert(len(t1[1]['text'].split()) == 3)
     assert(len(t1[2]['text'].split()) == 1)
