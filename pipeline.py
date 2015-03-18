@@ -5,6 +5,7 @@ from remove_non_english import remove_non_english
 from remove_digits import remove_digits
 from remove_links import remove_links
 from remove_empty import remove_empty
+from remove_small_tokens import remove_small_tokens
 from feature_extractors import *
 from clustering import *
 from trend_extraction import *
@@ -37,7 +38,8 @@ if __name__ == '__main__':
     
     print('Cleaning...')
     tweets = remove_punctuation(tweets)
-    tweets = remove_non_english(tweets, 0.25)
+    tweets = remove_non_english(tweets, 0.1)
+    tweets = remove_small_tokens(tweets)
     tweets = remove_stop_words(tweets)
     tweets = remove_links(tweets)
     tweets = remove_digits(tweets)
@@ -47,7 +49,7 @@ if __name__ == '__main__':
     #By using all tweets, we get a better idea of what the "true" use of the word is. Can detect spikes!
     print('Extracting Features...')
     from sklearn.feature_extraction.text import CountVectorizer
-    cv = CountVectorizer(ngram_range=(1,3), max_df=0.7, min_df=0.0005)
+    cv = CountVectorizer(ngram_range=(1,3), max_df=0.7, min_df=0.00025)
     cv.fit([t['text'] for t in tweets])
     feats = cv.transform([t['text'] for t in tweets])
 
@@ -60,8 +62,8 @@ if __name__ == '__main__':
     print('\tsample1_feats shape:', feats_sample1.shape)
 
     print('Clustering...')
-    n_c = 1
-    clusters = np.zeros((feats_sample1.shape[0],)) #ward_linkage_clustering(feats_sample1, n_c)
+    n_c = 12
+    clusters = k_means_clustering(feats_sample1, n_c)
     print('Clustered')
 
 ##Largest cluster?
@@ -80,7 +82,7 @@ if __name__ == '__main__':
         avg_cluster_term_usage = cluster.sum(axis=0) / cluster.shape[0]
         dif = (avg_cluster_term_usage - avg_term_usage).reshape((avg_term_usage.shape[1],1))
         possible_trends = sorted([(i,diff) for i,diff in enumerate(dif)], key=lambda x: x[1], reverse=True)
-        expected_trends = expected_trends + [cv.get_feature_names()[i] for i,_ in possible_trends[0:10]]
+        expected_trends.append([cv.get_feature_names()[i] for i,_ in possible_trends[0:5]])
 
         #expected_trends.append(lda_extract_topic(cluster, vocab, 5))
         print('\tTrends extracted.')
@@ -91,3 +93,6 @@ if __name__ == '__main__':
     with open('data/sample1.trends.txt') as f:
         content = f.readlines()
     print([t['name'] for t in json.loads(content[0])[0]['trends']])
+
+    print('\nWords:')
+    print(cv.get_feature_names()[1:])
