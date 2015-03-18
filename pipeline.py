@@ -38,8 +38,8 @@ if __name__ == '__main__':
     
     print('Cleaning...')
     tweets = remove_punctuation(tweets)
-    tweets = remove_non_english(tweets, 0.1)
-    tweets = remove_small_tokens(tweets)
+    tweets = remove_non_english(tweets, 0.35)
+    tweets = remove_small_tokens(tweets, 3)
     tweets = remove_stop_words(tweets)
     tweets = remove_links(tweets)
     tweets = remove_digits(tweets)

@@ -1,7 +1,11 @@
 from langdetect import detect
 import nltk
 
-english_vocab = set(w.lower() for w in nltk.corpus.words.words())
+names = [name.lower() for name in nltk.corpus.names.words()]
+english_vocab = [w.lower() for w in nltk.corpus.words.words()]
+chat_vocab = [w.lower() for w in nltk.corpus.nps_chat.words()]
+
+full_vocab = set(english_vocab + names + chat_vocab)
 
 def remove_non_english(tweets: list, thres: float = 0.5) -> list:
     '''
@@ -10,7 +14,7 @@ def remove_non_english(tweets: list, thres: float = 0.5) -> list:
             a tweet is kept if pct_eng >= thres
         The output of this transformer is a list with all the non-english words removed.
     '''
-    pct_eng = [sum([1 for t in tweet['text'].split() if t.strip('#').lower() in english_vocab])/len(tweet) for tweet in tweets]
+    pct_eng = [sum([1 for t in tweet['text'].split() if t.strip('#').lower() in full_vocab])/len(tweet) for tweet in tweets]
     return [tweet for i,tweet in enumerate(tweets) if pct_eng[i] >= thres]
     
 def detect_wrapper(x: str) -> bool:
