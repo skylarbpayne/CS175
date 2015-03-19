@@ -32,6 +32,7 @@ if __name__ == '__main__':
     
     print('Cleaning...')
     tweets = remove_punctuation(tweets)
+    tweets = remove_unicode(tweets)
     tweets = remove_non_english(tweets, 0.35)
     tweets = remove_small_tokens(tweets, 3)
     tweets = remove_stop_words(tweets)
@@ -86,7 +87,8 @@ if __name__ == '__main__':
     print('Actual Trends')
     with open('data/sample1.trends.txt') as f:
         content = f.readlines()
-    print([t['name'] for t in json.loads(content[0])[0]['trends']])
+	#Stripping from actual trends as well.
+    print([strip_unicode(t['name']) for t in json.loads(content[0])[0]['trends'] if strip_unicode(t['name']) != " "])
 
     print('\nWords:')
     print(cv.get_feature_names()[1:])

@@ -119,13 +119,20 @@ def remove_stop_words(tweets: list) -> list:
         tweet['text'] = ' '.join([token for token in tweet['text'].split() if token.lower() not in english_stop_words])
     return tweets
 
+def strip_unicode (s: str) -> str:
+    '''
+        s is a string object.
+        The output of this transformer is a string with all the unicode removed.
+    '''
+    return "".join([c for c in s if ord(c) < 128])
+	
 def remove_unicode (tweets: list) -> list:
     '''
         tweets is a list of dictionaries representing tweet objects
         The output of this transformer is a list with all the unicode removed.
     '''
     for tweet in tweets:
-	    tweet['text'] = "".join([token for token in tweet['text'] if ord(token) < 128])
+	    tweet['text'] = strip_unicode(tweet['text'])
     return tweets
 	
 if __name__ == '__main__':
