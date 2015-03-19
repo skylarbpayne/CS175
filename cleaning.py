@@ -119,6 +119,15 @@ def remove_stop_words(tweets: list) -> list:
         tweet['text'] = ' '.join([token for token in tweet['text'].split() if token.lower() not in english_stop_words])
     return tweets
 
+def remove_unicode (tweets: list) -> list:
+    '''
+        tweets is a list of dictionaries representing tweet objects
+        The output of this transformer is a list with all the unicode removed.
+    '''
+    for tweet in tweets:
+	    tweet['text'] = "".join([token for token in tweet['text'] if ord(token) < 128])
+    return tweets
+	
 if __name__ == '__main__':
     print('Testing remove_digits...')
     tweets = [{'text': '124 hey'}]
@@ -172,4 +181,11 @@ if __name__ == '__main__':
     assert(len(t1[1]['text'].split()) == 3)
     assert(len(t1[2]['text'].split()) == 1)
     assert(len(t1[2]) == 2)
+    print('\tPASSED')
+
+	
+    print('Testing remove_unicode...')
+    test_tweets = [{'text':'Hi there,' + chr(57344) + ' unicode is annoying.'}]
+    t1 = remove_unicode(test_tweets)
+    assert(t1[0]['text'] == 'Hi there, unicode is annoying.')
     print('\tPASSED')
